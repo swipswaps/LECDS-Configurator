@@ -81,8 +81,27 @@ export default function App() {
       setParams({ ...params, vacuumKPa: 30, saltPercent: 10, hydrogelType: 'PNIPAM_PAM' });
     } else if (preset === 'balanced') {
       setParams({ ...params, vacuumKPa: 40, pcmLoading: 15, saltPercent: 5, aerogelThicknessMm: 2 });
+    } else if (preset === 'reset') {
+      setParams({
+        hydrogelType: 'PNIPAM_PAM',
+        fabricPermeability: 1e-9,
+        foilEmissivity: 0.95,
+        pcmLoading: 15,
+        saltPercent: 5,
+        vacuumKPa: 40,
+        aerogelThicknessMm: 2
+      });
     }
   };
+
+  const getSimulationStatus = () => {
+    if (!results) return null;
+    if (results.deltaT < 10) return { label: 'Ineffective', color: 'text-red-500', bg: 'bg-red-50', icon: <AlertCircle className="w-4 h-4" />, message: 'Low thermal impact. Try increasing vacuum or PCM loading.' };
+    if (results.deltaT < 15) return { label: 'Sub-optimal', color: 'text-amber-500', bg: 'bg-amber-50', icon: <Info className="w-4 h-4" />, message: 'Moderate performance. Adjust salt or permeability for better wicking.' };
+    return { label: 'Optimal', color: 'text-green-500', bg: 'bg-green-50', icon: <Activity className="w-4 h-4" />, message: 'System is operating at peak efficiency for these materials.' };
+  };
+
+  const status = getSimulationStatus();
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] flex font-sans text-gray-900">
@@ -99,11 +118,27 @@ export default function App() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-8">
+          {status && (
+            <section className={`p-4 rounded-2xl ${status.bg} border border-current/10`}>
+              <div className={`flex items-center gap-2 font-bold ${status.color} mb-1`}>
+                {status.icon}
+                <span className="text-xs uppercase tracking-wider">{status.label} Config</span>
+              </div>
+              <p className="text-[11px] text-gray-600 leading-relaxed">{status.message}</p>
+            </section>
+          )}
+
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
                 <Settings className="w-4 h-4" /> Presets
               </h2>
+              <button 
+                onClick={() => applyPreset('reset')}
+                className="text-[10px] font-bold text-blue-600 hover:text-blue-700 uppercase tracking-widest flex items-center gap-1"
+              >
+                <RefreshCw className="w-3 h-3" /> Reset
+              </button>
             </div>
             <div className="grid grid-cols-1 gap-2">
               <button 

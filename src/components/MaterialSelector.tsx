@@ -19,7 +19,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
   <div className="space-y-8">
     {/* Each slider has a tooltip that explains the real CFD meaning without jargon */}
     <div>
-      <label className="block text-sm font-medium mb-1">Hydrogel Type</label>
+      <label className="block text-sm font-medium mb-1" title="The type of polymer matrix used to hold the working fluid. PNIPAM offers superior thermo-responsive cooling.">Hydrogel Type</label>
       <select 
         value={params.hydrogelType} 
         onChange={e => onChange('hydrogelType', e.target.value)} 
@@ -31,7 +31,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
     </div>
 
     <div>
-      <label className="block text-sm font-medium mb-1">Fabric Permeability (higher = faster wicking)</label>
+      <label className="block text-sm font-medium mb-1" title="How easily fluid moves through the fabric. Higher permeability increases wicking speed but may reduce structural integrity.">Fabric Permeability (higher = faster wicking)</label>
       <input 
         type="range" 
         min="1e-10" 
@@ -45,7 +45,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
     </div>
 
     <div>
-      <label className="block text-sm font-medium mb-1">Vacuum Level (lower = stronger evaporation)</label>
+      <label className="block text-sm font-medium mb-1" title="Internal pressure of the system. Lower pressure (stronger vacuum) significantly boosts evaporation rates.">Vacuum Level (lower = stronger evaporation)</label>
       <input 
         type="range" 
         min="10" 
@@ -58,7 +58,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
     </div>
 
     <div>
-      <label className="block text-sm font-medium mb-1">PCM Loading (Phase Change Material %)</label>
+      <label className="block text-sm font-medium mb-1" title="Percentage of Phase Change Material. PCM buffers temperature swings by absorbing latent heat during peak sun.">PCM Loading (Phase Change Material %)</label>
       <input 
         type="range" 
         min="0" 
@@ -71,7 +71,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
     </div>
 
     <div>
-      <label className="block text-sm font-medium mb-1">Salt Concentration (BPE Optimization)</label>
+      <label className="block text-sm font-medium mb-1" title="Salt concentration in the working fluid. Optimized salt levels improve thermal conductivity and boiling point elevation (BPE).">Salt Concentration (BPE Optimization)</label>
       <input 
         type="range" 
         min="0" 
@@ -84,7 +84,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({ params, onChange })
     </div>
 
     <div>
-      <label className="block text-sm font-medium mb-1">Aerogel Thickness (Insulation)</label>
+      <label className="block text-sm font-medium mb-1" title="Thickness of the aerogel insulation layer. Thicker insulation reduces heat loss to ambient air.">Aerogel Thickness (Insulation)</label>
       <input 
         type="range" 
         min="0" 
