@@ -1,0 +1,5 @@
+{
+  "name": "LECDS Configurator",
+  "description": "Laminated Evaporative Cooling & Distillation System (LECDS) for solar panels with real-time CFD previews.",
+  "requestFramePermissions": []
+}
