@@ -35,6 +35,8 @@ async function startServer() {
         pcmLoading = 15,
         saltPercent = 5,
         vacuumKPa = 40,
+        aerogelThicknessMm = 2,
+        foilEmissivity = 0.95
       } = params;
 
       // Base constants from project literature
@@ -43,13 +45,17 @@ async function startServer() {
       const saltBPEFactor = 1 + saltPercent * 0.08;
       const pcmFactor = 1 + (pcmLoading / 100) * 0.4;
       
+      // New factors for previously ignored parameters
+      const permeabilityFactor = 1 + Math.log10(fabricPermeability / 1e-10) * 0.03;
+      const insulationFactor = 1 + (aerogelThicknessMm / 10) * 0.2 + (1 - foilEmissivity) * 0.1;
+      
       // Compute final values
-      let deltaT = baseDeltaT * vacuumFactor * saltBPEFactor * pcmFactor;
-      deltaT = Math.min(25, Math.max(8, deltaT));
+      let deltaT = baseDeltaT * vacuumFactor * saltBPEFactor * pcmFactor * permeabilityFactor * insulationFactor;
+      deltaT = Math.min(28, Math.max(5, deltaT));
 
-      const distillateYield = Math.max(0.7, 1.2 * ((101 - vacuumKPa) / 30) * (1 + saltPercent * 0.08));
-      const efficiencyGain = Math.min(18, Math.max(4, 8 * (deltaT / 15)));
-      const pvhiMitigation = Math.min(3, Math.max(0.8, deltaT * 0.12));
+      const distillateYield = Math.max(0.5, 1.2 * ((101 - vacuumKPa) / 30) * (1 + saltPercent * 0.08) * permeabilityFactor);
+      const efficiencyGain = Math.min(22, Math.max(2, 8 * (deltaT / 15)));
+      const pvhiMitigation = Math.min(4, Math.max(0.5, deltaT * 0.14));
 
       // Generate temperature profile (20 cm channel, 21 points)
       const tempProfile = [];

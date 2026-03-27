@@ -55,12 +55,13 @@ export default function App() {
       console.error('Simulation failed:', err.message);
       setError('Simulation failed — Using cached preview');
       // Fallback to mock results if API fails (e.g. during dev)
+      const mockDeltaT = 15 * ((101 - params.vacuumKPa) / 60) * (1 + (params.pcmLoading / 100) * 0.4) * (1 + (params.aerogelThicknessMm / 10) * 0.15);
       setResults({
-        deltaT: 18,
-        distillateYield: 2.1,
-        efficiencyGain: 12.5,
-        pvhiMitigation: 2.2,
-        tempProfile: Array.from({ length: 21 }, (_, i) => ({ pos: i, temp: 75 - i * 1.2 }))
+        deltaT: mockDeltaT,
+        distillateYield: 1.2 * ((101 - params.vacuumKPa) / 30) * (1 + params.saltPercent * 0.08),
+        efficiencyGain: 8 * (mockDeltaT / 15),
+        pvhiMitigation: mockDeltaT * 0.12,
+        tempProfile: Array.from({ length: 21 }, (_, i) => ({ pos: i, temp: 75 - mockDeltaT * (i / 20) }))
       });
     }
     setLoading(false);
